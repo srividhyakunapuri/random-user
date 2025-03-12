@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random User Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .profile-container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-container img {
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .email {
+            color: #555;
+            margin-top: 10px;
+        }
+        .address {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #888;
+        }
+        .btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container" id="profile">
+        <img id="user-image" src="" alt="User Image" width="150" height="150">
+        <div class="name" id="user-name"></div>
+        <div class="email" id="user-email"></div>
+        <div class="address" id="user-address"></div>
+        <button class="btn" onclick="generateRandomUser()">Generate New Profile</button>
+    </div>
+
+    <script>
+        function generateRandomUser() {
+            fetch('https://randomuser.me/api/')
+                .then(response => response.json())
+                .then(data => {
+                    const user = data.results[0];
+                    document.getElementById('user-image').src = user.picture.large;
+                    document.getElementById('user-name').innerText = `${user.name.first} ${user.name.last}`;
+                    document.getElementById('user-email').innerText = user.email;
+                    document.getElementById('user-address').innerText = `${user.location.city}, ${user.location.country}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching random user:', error);
+                });
+        }
+
+        // Generate the first random user on page load
+        window.onload = generateRandomUser;
+    </script>
+</body>
+</html>
